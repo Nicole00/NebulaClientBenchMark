@@ -22,3 +22,34 @@ sh build.sh
 sh run.sh
 ```
 
+
+## 结果示例
+nebula client 3.x
+```agsl
+Result "execute":
+  157.725 ±(99.9%) 116.771 ms/op [Average]
+  (min, avg, max) = (133.705, 157.725, 210.583), stdev = 30.325
+  CI (99.9%): [40.954, 274.496] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:01:19
+
+Benchmark               Mode  Cnt    Score     Error   Units
+NebulaClient3.execute  thrpt    5    0.006 ±   0.006  ops/ms
+NebulaClient3.execute   avgt    5  157.725 ± 116.771   ms/op
+```
+
+nebula client 5.0
+```agsl
+Result "org.example.NebulaClient5.execute":
+  53.990 ±(99.9%) 35.151 ms/op [Average]
+  (min, avg, max) = (46.140, 53.990, 69.214), stdev = 9.129
+  CI (99.9%): [18.839, 89.141] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:01:07
+
+Benchmark              Mode  Cnt   Score    Error  Units
+NebulaClient5.execute  avgt    5  53.990 ± 35.151  ms/op
+```
+更多测试方式和结果参考 https://github.dev/openjdk/jmh
