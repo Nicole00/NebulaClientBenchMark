@@ -31,10 +31,11 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import sun.misc.Unsafe;
+
 @BenchmarkMode({Mode.AverageTime})
 @Warmup(iterations = 3)
 @Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Threads(1)
 @Fork(1)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class NebulaClient3 {
@@ -74,7 +75,17 @@ public class NebulaClient3 {
     }
 
     @Benchmark
-    public void execute() throws IOErrorException, AuthFailedException, ClientServerIncompatibleException,
+    @Threads(1)
+    public void executeWithSingleThread() throws IOErrorException, AuthFailedException, ClientServerIncompatibleException,
+            NotValidConnectionException {
+        Session session = pool.getSession("root", "nebula", false);
+        session.execute("return 1");
+        session.release();
+    }
+
+    @Benchmark
+    @Threads(10)
+    public void executeWithMultipleThreads() throws IOErrorException, AuthFailedException, ClientServerIncompatibleException,
             NotValidConnectionException {
         Session session = pool.getSession("root", "nebula", false);
         session.execute("return 1");

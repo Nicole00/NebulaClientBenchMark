@@ -11,6 +11,7 @@ import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Threads;
 import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.results.format.ResultFormatType;
@@ -52,15 +53,21 @@ public class NebulaClient5 {
 
         Options options = new OptionsBuilder()
                 .include(NebulaClient5.class.getSimpleName())
-//                .output("/tmp/benchmark.log")
                 .resultFormat(ResultFormatType.JSON)
                 .build();
         new Runner(options).run();
     }
 
 
+    @Threads(1)
     @Benchmark
-    public static void execute() throws IOErrorException, NoValidSessionException {
+    public static void executeWithSingleThread() throws IOErrorException, NoValidSessionException {
        client.execute("return 1");
+    }
+
+    @Threads(10)
+    @Benchmark
+    public static void executeWithMultipleThreads() throws IOErrorException, NoValidSessionException {
+        client.execute("return 1");
     }
 }
